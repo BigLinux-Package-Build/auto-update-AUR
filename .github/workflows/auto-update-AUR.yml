@@ -35,10 +35,13 @@ jobs:
           User aur' >> ~/.ssh/config
         
           echo "${{ secrets.SSH_AUR }}" >  ~/.ssh/aur
+          chmod 500 ~/.ssh/aur
           
-      # Tmate ##
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3 
+          ssh-keyscan -t ecdsa aur.archlinux.org,95.216.144.15 > ~/.ssh/known_hosts
+          
+      # # Tmate ##
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3 
         
       - name: Version AUR vs GIT
         shell: bash -O extglob {0}
