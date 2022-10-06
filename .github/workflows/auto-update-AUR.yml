@@ -48,20 +48,20 @@ jobs:
         run: |
           for i in $(cat lista-with-tag); do
             #AUR PKGBUILD
-            git clone ssh://aur@aur.archlinux.org/${i}.git
-            cd $i
+            git clone ssh://aur@aur.archlinux.org/${i}.git -l aur-$i
+            cd aur-$i
             source PKGBUILD
             cd ..
             
             #GIT ORIGEN 
-            git clone ${url}.git
-            cd ${pkgname}
+            git clone ${url}.git -l git-$i
+            cd git-${pkgname}
             vertaggit=$(git tag | sort | tail -n1)
             cd ..
             
             #CHANGE pkgver=
             if [ "${pkgver}" != "${vertaggit}" ]; then
-              cd $i
+              cd aur-$i
               sed -i "s/pkgver=.*/${vertaggit}/" PKGBUILD
               makepkg --printsrcinfo > .SRCINFO
               git add PKGBUILD .SRCINFO
