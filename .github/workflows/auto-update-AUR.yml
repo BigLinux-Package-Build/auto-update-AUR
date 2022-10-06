@@ -36,9 +36,9 @@ jobs:
         
           echo "${{ secrets.SSH_AUR }}" >  ~/.ssh/aur
           
-      ## Tmate ##
-      #- name: Setup tmate session
-        #uses: mxschmitt/action-tmate@v3 
+      # Tmate ##
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3 
         
       - name: Version AUR vs GIT
         shell: bash -O extglob {0}
