@@ -24,7 +24,11 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install \
+          libarchive-dev \
           git 
+          
+          sudo python3 -m pip install meson
+          sudo python3 -m pip install ninja
           
       - name: Configure SSH
         shell: bash -O extglob {0}
@@ -59,9 +63,11 @@ jobs:
             #CHANGE pkgver=
             if [ "${pkgver}" != "${vertaggit}" ]; then
               cd aur-$i
-              sed -i "s/pkgver=.*/${vertaggit}/" PKGBUILD
+              sed -i "s/pkgver=.*/pkgver=${vertaggit}/" PKGBUILD
               makepkg --printsrcinfo > .SRCINFO
               git add PKGBUILD .SRCINFO
+              git config --global user.email "${{ secrets.AUR_PUSH_EMAIL }}"
+              git config --global user.name "${{ secrets.AUR_PUSH_USER }}"
               git commit -m "version ${vertaggit}"
               git push
             fi
